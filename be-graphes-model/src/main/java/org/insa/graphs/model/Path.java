@@ -198,11 +198,23 @@ public class Path {
      * 
      * @return true if the path is valid, false otherwise.
      * 
-     * @deprecated Need to be implemented.
      */
     public boolean isValid() {
-        // TODO:
-        return false;
+	    boolean valid= false;
+	    java.util.List<Arc> tabarc= this.getArcs();
+	    if(this.isEmpty()) {
+	        valid=true;
+	    }
+	    else if(this.size()==1){
+	        valid= true;
+	    }
+	    int i=0;
+        valid= true;
+	    while(valid && i<(this.size()-1)) {
+	        valid=(tabarc.get(i).getDestination().compareTo(tabarc.get(i+1).getOrigin())==0);
+	        i++;
+	    }
+	    return valid;
     }
 
     /**
@@ -210,11 +222,15 @@ public class Path {
      * 
      * @return Total length of the path (in meters).
      * 
-     * @deprecated Need to be implemented.
      */
     public float getLength() {
-        // TODO:
-        return 0;
+        float taille=0;
+        java.util.List<Arc> tabarc= this.getArcs();
+        
+        for (int i=0;i<this.size()-1;i++){
+            taille+=tabarc.get(i).getLength();
+        }
+        return taille;
     }
 
     /**
@@ -225,11 +241,11 @@ public class Path {
      * @return Time (in seconds) required to travel this path at the given speed (in
      *         kilometers-per-hour).
      * 
-     * @deprecated Need to be implemented.
      */
     public double getTravelTime(double speed) {
-        // TODO:
-        return 0;
+    	
+    	double Time = this.getLength()/speed;
+    	return Time;
     }
 
     /**
@@ -238,11 +254,14 @@ public class Path {
      * 
      * @return Minimum travel time to travel this path (in seconds).
      * 
-     * @deprecated Need to be implemented.
      */
     public double getMinimumTravelTime() {
-        // TODO:
-        return 0;
+   		java.util.List<Arc> TabArc= this.getArcs();
+   		double MinTime =0;
+    	for (int i=0;i<this.size()-1;i++) {
+    		MinTime=TabArc.get(i).getMinimumTravelTime()+MinTime;    	
+    	}
+    	return MinTime;
     }
 
 }
