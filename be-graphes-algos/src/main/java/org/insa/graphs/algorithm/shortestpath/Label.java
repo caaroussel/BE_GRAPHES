@@ -1,6 +1,6 @@
 package org.insa.graphs.algorithm.shortestpath;
 import org.insa.graphs.model.Node;
-
+import org.insa.graphs.model.Arc;
 
 public class Label implements Comparable<Label> {
 
@@ -15,7 +15,7 @@ public class Label implements Comparable<Label> {
 	protected double Cost;
 	
 	//Sommet précédent sur le chemin le plus court
-	private Node Father;
+	private Arc Father;
 	
 	
 	public Label(Node noeud) {
@@ -24,12 +24,17 @@ public class Label implements Comparable<Label> {
 		this.Father=null;
 		this.Marque=false;
 	}
+
+	public Node getNoeud(){
+		return this.CurrentNode;
+	}
+	
 	
 	public boolean getMarque(){
 		return this.Marque;
 	}
 	
-	public Node getFather() {
+	public Arc getFather() {
 		return this.Father;
 	}
 	
@@ -45,7 +50,7 @@ public class Label implements Comparable<Label> {
 		this.Cost=Cost;
 	}
 	
-	public void setFather(Node Father) {
+	public void setFather(Arc Father) {
 		this.Father=Father;
 	}
 	
