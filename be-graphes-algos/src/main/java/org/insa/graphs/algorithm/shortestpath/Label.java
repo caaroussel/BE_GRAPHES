@@ -44,6 +44,11 @@ public class Label implements Comparable<Label> {
 		return this.Cost;		
 	}
 	
+	public double getTotalCost() {
+		return this.Cost;
+	}
+	
+	
 	
 	
 	public void setCost(double Cost) {
@@ -61,7 +66,7 @@ public class Label implements Comparable<Label> {
 	
 	
 	public int compareTo(Label autre) {
-		int res;
+		/*int res;
 		if (this.Cost>autre.Cost) {
 			res=-1;
 		}
@@ -71,7 +76,8 @@ public class Label implements Comparable<Label> {
 		else {
 			res=1;
 		}
-		return res;
+		return res;*/
+		return (this.Cost<autre.getTotalCost())?-1:1;
 	}
 
 	

@@ -33,11 +33,14 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         Label TabLab[]= new Label[nbSommet];
         
         BinaryHeap<Label> tas= new BinaryHeap<Label>();
-        
-        Arc[] predecessorArcs = new Arc[nbSommet];
+        notifyOriginProcessed(data.getOrigin());
+        //Arc[] predecessorArcs = new Arc[nbSommet];
         
         
         Label Debut = new Label(data.getOrigin());
+        Label Fin = new Label(data.getDestination());
+        TabLab[Debut.getNoeud().getId()]=Debut;
+        TabLab[Fin.getNoeud().getId()]=Fin;
         Debut.setCost(0);
         tas.insert(Debut);
 
@@ -45,18 +48,15 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         while (!tas.isEmpty() && !arrivee)
         {
         	Label CurrentSommet=tas.deleteMin();
-        	CurrentSommet.setMarque(true);
-        	System.out.println("Origine :");
-        	System.out.println(CurrentSommet.getCost());
         	
-        	if (CurrentSommet.getNoeud()== data.getDestination())
-        	{
-        		arrivee = true;
-        	}
+        	CurrentSommet.setMarque(true);
+        	notifyNodeMarked(CurrentSommet.getNoeud());
+
         	
         	
         	for (Arc arc: CurrentSommet.getNoeud().getSuccessors())
         	{
+        		
         		Node Sucesseur = arc.getDestination();
         		Label SucesseurLabel=TabLab[Sucesseur.getId()];
         		if (SucesseurLabel==null)
@@ -69,6 +69,12 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                     continue;
                 }
                 
+
+                
+                if (Double.isInfinite(SucesseurLabel.getCost()) && Double.isFinite((CurrentSommet.getCost() + data.getCost(arc)))) {
+                    notifyNodeReached(arc.getDestination());
+                }
+                
                 if (!SucesseurLabel.getMarque())
                 {
                 	if (SucesseurLabel.getCost()>CurrentSommet.getCost() + data.getCost(arc))
@@ -79,21 +85,20 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                 		}
                 		
                 		SucesseurLabel.setCost(CurrentSommet.getCost() + data.getCost(arc));
-                    	System.out.println("Sucesseur :");
-                    	System.out.println(SucesseurLabel.getCost());
                 		tas.insert(SucesseurLabel);
-                		predecessorArcs[arc.getDestination().getId()] = arc;
+                		//predecessorArcs[arc.getDestination().getId()] = arc;
                 		SucesseurLabel.setFather(arc);
                 		TabLab[Sucesseur.getId()]=SucesseurLabel;
                 	}
+                	}
                 }
- 
-        	}
+	        	if (CurrentSommet.getNoeud()== data.getDestination())
+	        	{
+	        		arrivee = true;
+	        		
+	        	}
         }
-        
-        
-        
-        if (predecessorArcs[data.getDestination().getId()] == null) {
+        if (TabLab[Fin.getNoeud().getId()].getFather() == null) {
             solution = new ShortestPathSolution(data, Status.INFEASIBLE);
         }
         else {
@@ -103,13 +108,10 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
             // Create the path from the array of predecessors...
             ArrayList<Arc> arcs = new ArrayList<>();
-            Arc arc = predecessorArcs[data.getDestination().getId()];
+            Arc arc = TabLab[data.getDestination().getId()].getFather();
             while (arc != null) {
-            	System.out.println("Arc :");
-            	System.out.println(arc.getOrigin().getId());
-            	System.out.println(arc.getDestination().getId());
                 arcs.add(arc);
-                arc = predecessorArcs[arc.getOrigin().getId()];
+                arc = TabLab[arc.getOrigin().getId()].getFather();
             }
 
             // Reverse the path...
@@ -123,3 +125,5 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     }
 
 }
+
+
