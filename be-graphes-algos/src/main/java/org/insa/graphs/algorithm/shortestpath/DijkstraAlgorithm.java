@@ -37,8 +37,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         //Arc[] predecessorArcs = new Arc[nbSommet];
         
         
-        Label Debut = new Label(data.getOrigin());
-        Label Fin = new Label(data.getDestination());
+        Label Debut = newLabel(data.getOrigin(), data);
+        Label Fin = newLabel(data.getDestination(), data);
         TabLab[Debut.getNoeud().getId()]=Debut;
         TabLab[Fin.getNoeud().getId()]=Fin;
         Debut.setCost(0);
@@ -61,7 +61,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         		Label SucesseurLabel=TabLab[Sucesseur.getId()];
         		if (SucesseurLabel==null)
         		{
-        			SucesseurLabel = new Label(Sucesseur);
+        			SucesseurLabel = newLabel(Sucesseur, data);
         		}
         		
                 if (!data.isAllowed(arc)) 
@@ -122,6 +122,10 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         }
         
         return solution;
+    }
+
+    protected Label newLabel(Node node, ShortestPathData data) {
+    	return new Label(node);
     }
 
 }

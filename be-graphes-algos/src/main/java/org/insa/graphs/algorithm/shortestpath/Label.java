@@ -67,17 +67,17 @@ public class Label implements Comparable<Label> {
 	
 	public int compareTo(Label autre) {
 		/*int res;
-		if (this.Cost>autre.Cost) {
+		if (this.getTotalCost()>autre.getTotalCost()) {
 			res=-1;
 		}
-		else if (this.Cost==autre.Cost) {
-			res=0;
-		}
-		else {
+		else if (this.getTotalCost()<autre.getTotalCost()) {
 			res=1;
 		}
+		else {
+			res=0;
+		}
 		return res;*/
-		return (this.Cost<autre.getTotalCost())?-1:1;
+		return (this.getTotalCost()<autre.getTotalCost())?-1:1;
 	}
 
 	
