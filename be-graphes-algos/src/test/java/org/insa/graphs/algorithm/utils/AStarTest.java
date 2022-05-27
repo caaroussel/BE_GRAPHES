@@ -2,12 +2,11 @@ package org.insa.graphs.algorithm.utils;
 
 import static org.junit.Assert.*;
 
+import org.insa.graphs.model.io.GraphReader;
+import org.junit.Test;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
-
-
-import org.insa.graphs.model.io.GraphReader;
 import org.insa.graphs.model.io.BinaryGraphReader;
 
 import org.junit.Test;
@@ -21,21 +20,23 @@ import org.insa.graphs.model.Graph;
 
 import java.util.Random;
 
-public class DijkstraTest {
-	
+
+public class AStarTest {
+
 	@Test
-	public void testDijkstra() throws Exception {
+	public void testAStar() {
+
 		
 		GraphReader Reader = new BinaryGraphReader(new DataInputStream(new BufferedInputStream(new FileInputStream(/mnt/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/france.mapgr))));
 		
 		Graph graph = Reader.read();
 		int origine;
 		int destination;
-		ArcInspector arcInspectorDijkstra = null;
+		ArcInspector arcInspectorAStar = null;
 		
 		System.out.println("Test chemin le plus court en temps");
 		
-		arcInspectorDijkstra = ArcInspectorFactory.getAllFilters().get(2);
+		arcInspectorAStar = ArcInspectorFactory.getAllFilters().get(2);
 		
 		for (int i=0;i<500;i++) 
 		{
@@ -46,13 +47,13 @@ public class DijkstraTest {
 			{
 				destination =0 + random.nextInt(graph.size()-0);
 			}
-			ShortestPathData data = new ShortestPathData(graph, graph.get(origine),graph.get(destination), arcInspectorDijkstra);
+			ShortestPathData data = new ShortestPathData(graph, graph.get(origine),graph.get(destination), arcInspectorAStar);
 			
 			BellmanFordAlgorithm Bell = new BellmanFordAlgorithm(data);
-			DijkstraAlgorithm Dijk = new DijkstraAlgorithm(data);
+			AStarAlgorithm AStar = new AStarAlgorithm(data);
 			
 			ShortestPathSolution expected = Bell.run();
-			ShortestPathSolution solution = Dijk.run();
+			ShortestPathSolution solution = AStar.run();
 			if (solution.getPath()== null) 
 			{
 				assertEquals(expected.getPath(), solution.getPath());
@@ -72,7 +73,7 @@ public class DijkstraTest {
 		
 		System.out.println("Test chemin le plus court en Distance");
 		
-		arcInspectorDijkstra = ArcInspectorFactory.getAllFilters().get(0);
+		arcInspectorAStar = ArcInspectorFactory.getAllFilters().get(0);
 		
 		for (int i=0;i<500;i++) 
 		{
@@ -83,10 +84,10 @@ public class DijkstraTest {
 			{
 				destination =0 + random.nextInt(graph.size()-0);
 			}
-			ShortestPathData data = new ShortestPathData(graph, graph.get(origine),graph.get(destination), arcInspectorDijkstra);
+			ShortestPathData data = new ShortestPathData(graph, graph.get(origine),graph.get(destination), arcInspectorAStar);
 			
 			BellmanFordAlgorithm Bell = new BellmanFordAlgorithm(data);
-			DijkstraAlgorithm Dijk = new DijkstraAlgorithm(data);
+			AStarAlgorithm Dijk = new AStarAlgorithm(data);
 			
 			ShortestPathSolution expected = Bell.run();
 			ShortestPathSolution solution = Dijk.run();
@@ -105,6 +106,7 @@ public class DijkstraTest {
 				System.out.println("le coût de la solution est " + coutSolution);
 			}
 		}
+	
 	}
-}
 
+}
